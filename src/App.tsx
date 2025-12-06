@@ -4,6 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AdminLayout } from "@/components/admin/AdminLayout";
+import { ProtectedRoute } from "@/components/admin/ProtectedRoute";
+import Login from "@/pages/Login";
 import Dashboard from "@/pages/admin/Dashboard";
 import AddDiamond from "@/pages/admin/diamonds/AddDiamond";
 import ManageDiamonds from "@/pages/admin/diamonds/ManageDiamonds";
@@ -25,11 +27,21 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          {/* Redirect root to admin */}
-          <Route path="/" element={<Navigate to="/admin" replace />} />
+          {/* Login Page */}
+          <Route path="/login" element={<Login />} />
           
-          {/* Admin Routes */}
-          <Route path="/admin" element={<AdminLayout />}>
+          {/* Redirect root to login */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          
+          {/* Protected Admin Routes */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<Dashboard />} />
             <Route path="diamonds" element={<ManageDiamonds />} />
             <Route path="diamonds/add" element={<AddDiamond />} />

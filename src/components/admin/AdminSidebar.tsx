@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import {
   LayoutDashboard,
@@ -61,6 +62,7 @@ const menuItems: MenuItem[] = [
 
 export function AdminSidebar({ collapsed, onToggle }: SidebarProps) {
   const location = useLocation();
+  const navigate = useNavigate();
   const [expandedMenus, setExpandedMenus] = useState<string[]>(['Diamonds', 'Jewellery', 'Sales']);
 
   const toggleMenu = (label: string) => {
@@ -176,6 +178,11 @@ export function AdminSidebar({ collapsed, onToggle }: SidebarProps) {
       {/* Logout */}
       <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-sidebar-border">
         <button
+          onClick={() => {
+            sessionStorage.removeItem('isAdminAuthenticated');
+            toast.success('Logged out successfully');
+            navigate('/login');
+          }}
           className={cn(
             'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg admin-transition',
             'hover:bg-destructive/10 text-destructive'
