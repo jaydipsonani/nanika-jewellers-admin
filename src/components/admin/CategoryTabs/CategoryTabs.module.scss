@@ -44,8 +44,8 @@
     @include transition(background-color, color, box-shadow);
 
     &.active {
-        background-color: $card-bg;
-        color: $text-primary;
+        background-color: $text-primary;
+        color: $card-bg;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
 

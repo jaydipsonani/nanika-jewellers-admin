@@ -42,7 +42,7 @@ export function CategoryTabs({ tabs, value, onChange, className, variant = 'defa
                     onClick={() => onChange(tab.value)}
                     className={cn(
                         styles.defaultBtn,
-                        value === tab.value ? styles.active : styles.inactive
+                        value == tab.value ? styles.active : styles.inactive
                     )}
                 >
                     {tab.label}

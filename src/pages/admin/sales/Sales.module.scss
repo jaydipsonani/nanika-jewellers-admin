@@ -1,0 +1,230 @@
+@import '../../../styles/variables';
+
+.container {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.filters {
+    background-color: $card-bg;
+    border-radius: $spacing-sm;
+    padding: $spacing-md;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    margin-bottom: $spacing-lg;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+
+    @media (min-width: 640px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 1024px) {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+.statsGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+    margin-bottom: $spacing-xl;
+
+    @media (min-width: 640px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.searchWrapper {
+    position: relative;
+
+    @media (min-width: 1024px) {
+        grid-column: span 2;
+    }
+}
+
+.searchIcon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: $text-secondary;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 8px 12px 8px 36px;
+    border-radius: 6px;
+    border: 1px solid $border-color;
+    background-color: $background-color;
+    color: $text-primary;
+    font-size: 0.875rem;
+    @include transition(border-color, box-shadow);
+
+    &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+    }
+}
+
+.section {
+    margin-top: $spacing-lg;
+}
+
+.sectionTitle {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: $text-primary;
+    margin-bottom: $spacing-md;
+}
+
+.linkBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.875rem;
+    color: $accent-color;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+// Order Details Specific
+.backLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.875rem;
+    color: $text-secondary;
+    margin-bottom: $spacing-md;
+
+    &:hover {
+        color: $text-primary;
+    }
+}
+
+.detailsGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $spacing-lg;
+
+    @media (min-width: 1024px) {
+        grid-template-columns: 2fr 1fr;
+    }
+}
+
+.card {
+    background-color: $card-bg;
+    border: 1px solid $border-color;
+    border-radius: $spacing-md;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    margin-bottom: $spacing-lg;
+}
+
+.cardHeader {
+    padding: $spacing-md;
+    border-bottom: 1px solid $border-color;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+
+    h3 {
+        font-weight: 500;
+        color: $text-primary;
+    }
+
+    svg {
+        color: $text-secondary;
+    }
+}
+
+.cardContent {
+    padding: $spacing-md;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+}
+
+.orderItem {
+    padding: $spacing-md;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid $border-color;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.itemMeta {
+    p:first-child {
+        font-weight: 500;
+    }
+
+    p:last-child {
+        font-size: 0.875rem;
+        color: $text-secondary;
+        text-transform: capitalize;
+    }
+}
+
+.itemPrice {
+    text-align: right;
+
+    p:first-child {
+        font-weight: 500;
+    }
+
+    p:last-child {
+        font-size: 0.875rem;
+        color: $text-secondary;
+    }
+}
+
+.summaryRow {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+
+    span:first-child {
+        color: $text-secondary;
+    }
+}
+
+.totalRow {
+    padding-top: $spacing-sm;
+    border-top: 1px solid $border-color;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+}
+
+.infoRow {
+    p:first-child {
+        font-size: 0.875rem;
+        color: $text-secondary;
+        margin-bottom: 4px;
+    }
+
+    p:last-child {
+        font-weight: 500;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

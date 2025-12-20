@@ -5,8 +5,7 @@ import { FormSelect } from '@/components/admin/FormSelect';
 import { Button } from '@/components/admin/Button';
 import { mockOrders } from '@/data/mockData';
 import { ArrowLeft, User, MapPin, Package, CreditCard } from 'lucide-react';
-import { cn } from '@/lib/utils';
-// import { Button } from '@/components/ui/button'; // Replaced with admin Button
+import styles from './Sales.module.scss';
 
 const orderStatusOptions = [
   { value: 'processing', label: 'Processing' },
@@ -30,29 +29,12 @@ export default function OrderDetails() {
     );
   }
 
-  // Helper styles mimicking the original tailwind layout but with inline styles or scss is better.
-  // Using generic styles mapped from my mind or inline to save creating a module for just this page cleanup.
-  const cardStyle = {
-    backgroundColor: 'var(--card-bg)',
-    borderRadius: '8px',
-    boxShadow: 'var(--admin-shadow)',
-    overflow: 'hidden',
-    border: '1px solid var(--border-color)'
-  };
-  const headerStyle = {
-    padding: '16px',
-    borderBottom: '1px solid var(--border-color)',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px'
-  };
-
   return (
-    <div className="animate-fade-in">
+    <div className={styles.container}>
       <div style={{ marginBottom: '24px' }}>
         <Link
           to="/admin/orders"
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.875rem', color: 'var(--text-secondary)', marginBottom: '16px' }}
+          className={styles.backLink}
         >
           <ArrowLeft size={16} />
           Back to Orders
@@ -68,25 +50,25 @@ export default function OrderDetails() {
         </PageHeader>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+      <div className={styles.detailsGrid}>
         {/* Main Content */}
-        <div style={{ flex: 2, display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           {/* Order Items */}
-          <div style={cardStyle}>
-            <div style={headerStyle}>
-              <Package size={16} className="text-muted-foreground" />
-              <h3 style={{ fontWeight: 500 }}>Order Items</h3>
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <Package size={16} />
+              <h3>Order Items</h3>
             </div>
             <div>
               {order.items.map((item) => (
-                <div key={item.id} style={{ padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)' }}>
-                  <div>
-                    <p style={{ fontWeight: 500 }}>{item.name}</p>
-                    <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', textTransform: 'capitalize' }}>{item.type}</p>
+                <div key={item.id} className={styles.orderItem}>
+                  <div className={styles.itemMeta}>
+                    <p>{item.name}</p>
+                    <p>{item.type}</p>
                   </div>
-                  <div style={{ textAlign: 'right' }}>
-                    <p style={{ fontWeight: 500 }}>₹{item.price.toLocaleString()}</p>
-                    <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Qty: {item.quantity}</p>
+                  <div className={styles.itemPrice}>
+                    <p>₹{item.price.toLocaleString()}</p>
+                    <p>Qty: {item.quantity}</p>
                   </div>
                 </div>
               ))}
@@ -98,25 +80,25 @@ export default function OrderDetails() {
           </div>
 
           {/* Payment Breakdown */}
-          <div style={cardStyle}>
-            <div style={headerStyle}>
-              <CreditCard size={16} className="text-muted-foreground" />
-              <h3 style={{ fontWeight: 500 }}>Payment Details</h3>
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <CreditCard size={16} />
+              <h3>Payment Details</h3>
             </div>
-            <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
-                <span style={{ color: 'var(--text-secondary)' }}>Subtotal</span>
+            <div className={styles.cardContent}>
+              <div className={styles.summaryRow}>
+                <span>Subtotal</span>
                 <span>₹{order.totalAmount.toLocaleString()}</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
-                <span style={{ color: 'var(--text-secondary)' }}>Shipping</span>
+              <div className={styles.summaryRow}>
+                <span>Shipping</span>
                 <span>Free</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
-                <span style={{ color: 'var(--text-secondary)' }}>Tax (GST 3%)</span>
+              <div className={styles.summaryRow}>
+                <span>Tax (GST 3%)</span>
                 <span>₹{Math.round(order.totalAmount * 0.03).toLocaleString()}</span>
               </div>
-              <div style={{ paddingTop: '12px', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', fontWeight: 500 }}>
+              <div className={styles.totalRow}>
                 <span>Grand Total</span>
                 <span>₹{Math.round(order.totalAmount * 1.03).toLocaleString()}</span>
               </div>
@@ -125,41 +107,50 @@ export default function OrderDetails() {
         </div>
 
         {/* Sidebar */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           {/* Customer Info */}
-          <div style={cardStyle}>
-            <div style={headerStyle}>
-              <User size={16} className="text-muted-foreground" />
-              <h3 style={{ fontWeight: 500 }}>Customer</h3>
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <User size={16} />
+              <h3>Customer</h3>
             </div>
-            <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <p style={{ fontWeight: 500 }}>{order.customerName}</p>
-              <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>{order.customerEmail}</p>
-              <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>{order.customerPhone}</p>
+            <div className={styles.cardContent}>
+              <div className={styles.infoRow}>
+                <p>Name</p>
+                <p>{order.customerName}</p>
+              </div>
+              <div className={styles.infoRow}>
+                <p>Email</p>
+                <p>{order.customerEmail}</p>
+              </div>
+              <div className={styles.infoRow}>
+                <p>Phone</p>
+                <p>{order.customerPhone}</p>
+              </div>
             </div>
           </div>
 
           {/* Shipping Address */}
-          <div style={cardStyle}>
-            <div style={headerStyle}>
-              <MapPin size={16} className="text-muted-foreground" />
-              <h3 style={{ fontWeight: 500 }}>Shipping Address</h3>
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <MapPin size={16} />
+              <h3>Shipping Address</h3>
             </div>
-            <div style={{ padding: '16px' }}>
+            <div className={styles.cardContent}>
               <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>{order.shippingAddress}</p>
-              <p style={{ fontSize: '0.875rem', marginTop: '8px' }}>
-                <span style={{ color: 'var(--text-secondary)' }}>Delivery:</span>{' '}
-                <span style={{ fontWeight: 500 }}>{order.deliveryDays} days</span>
-              </p>
+              <div className={styles.infoRow}>
+                <p>Delivery Estimate</p>
+                <p>{order.deliveryDays} days</p>
+              </div>
             </div>
           </div>
 
           {/* Status Update */}
-          <div style={cardStyle}>
-            <div style={{ padding: '16px', borderBottom: '1px solid var(--border-color)' }}>
-              <h3 style={{ fontWeight: 500 }}>Update Status</h3>
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <h3>Update Status</h3>
             </div>
-            <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div className={styles.cardContent}>
               <FormSelect
                 label="Order Status"
                 options={orderStatusOptions}

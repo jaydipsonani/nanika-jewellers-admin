@@ -4,6 +4,7 @@ import { DataTable } from '@/components/admin/DataTable';
 import { mockCustomers } from '@/data/mockData';
 import { Customer } from '@/types/admin';
 import { Search, Mail, Phone } from 'lucide-react';
+import styles from './Sales.module.scss';
 
 export default function CustomersList() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -21,8 +22,8 @@ export default function CustomersList() {
       label: 'Customer',
       render: (customer: Customer) => (
         <div>
-          <p className="font-medium">{customer.name}</p>
-          <p className="text-xs text-muted-foreground">{customer.email}</p>
+          <p style={{ fontWeight: 500 }}>{customer.name}</p>
+          <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{customer.email}</p>
         </div>
       ),
     },
@@ -30,8 +31,8 @@ export default function CustomersList() {
       key: 'phone',
       label: 'Phone',
       render: (customer: Customer) => (
-        <div className="flex items-center gap-1.5 text-muted-foreground">
-          <Phone className="h-3.5 w-3.5" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)' }}>
+          <Phone size={14} />
           {customer.phone}
         </div>
       ),
@@ -45,7 +46,7 @@ export default function CustomersList() {
       key: 'totalSpent',
       label: 'Total Spent',
       render: (customer: Customer) => (
-        <span className="font-medium">₹{customer.totalSpent.toLocaleString()}</span>
+        <span style={{ fontWeight: 500 }}>₹{customer.totalSpent.toLocaleString()}</span>
       ),
     },
     {
@@ -59,9 +60,9 @@ export default function CustomersList() {
       render: (customer: Customer) => (
         <a
           href={`mailto:${customer.email}`}
-          className="inline-flex items-center gap-1 text-sm text-accent hover:underline"
+          className={styles.linkBtn}
         >
-          <Mail className="h-4 w-4" />
+          <Mail size={16} />
           Email
         </a>
       ),
@@ -69,19 +70,19 @@ export default function CustomersList() {
   ];
 
   return (
-    <div className="animate-fade-in">
+    <div className={styles.container}>
       <PageHeader title="Customers" description="View and manage your customers" />
 
       {/* Search */}
-      <div className="bg-card rounded-lg p-4 admin-shadow mb-6">
-        <div className="relative max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      <div className={styles.filters}>
+        <div style={{ maxWidth: '400px' }} className={styles.searchWrapper}>
+          <Search className={styles.searchIcon} />
           <input
             type="text"
             placeholder="Search by name or email..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 rounded-md border border-input bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+            className={styles.searchInput}
           />
         </div>
       </div>

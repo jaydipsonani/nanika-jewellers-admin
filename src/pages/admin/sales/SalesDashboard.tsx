@@ -6,6 +6,7 @@ import { StatusBadge } from '@/components/admin/StatusBadge';
 import { mockOrders, mockSalesStats } from '@/data/mockData';
 import { Order } from '@/types/admin';
 import { ShoppingCart, DollarSign, Package, FileText } from 'lucide-react';
+import styles from './Sales.module.scss'; // Using shared module
 
 const orderColumns = [
   { key: 'id', label: 'Order ID' },
@@ -41,9 +42,9 @@ const orderColumns = [
     render: (order: Order) => (
       <Link
         to={`/admin/orders/${order.id}`}
-        className="inline-flex items-center gap-1 text-sm text-accent hover:underline"
+        className={styles.linkBtn}
       >
-        <FileText className="h-4 w-4" />
+        <FileText size={16} />
         View
       </Link>
     ),
@@ -52,14 +53,14 @@ const orderColumns = [
 
 export default function SalesDashboard() {
   return (
-    <div className="animate-fade-in">
+    <div className={styles.container}>
       <PageHeader
         title="Sales Dashboard"
         description="Overview of your sales performance"
       />
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      <div className={styles.statsGrid}>
         <StatsCard
           title="Total Orders"
           value={mockSalesStats.totalOrders}
@@ -81,8 +82,8 @@ export default function SalesDashboard() {
       </div>
 
       {/* Recent Orders */}
-      <div className="space-y-4">
-        <h2 className="text-lg font-medium text-foreground">Recent Orders</h2>
+      <div className={styles.section}>
+        <h2 className={styles.sectionTitle}>Recent Orders</h2>
         <DataTable columns={orderColumns} data={mockOrders} />
       </div>
     </div>

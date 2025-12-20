@@ -8,6 +8,7 @@ import { FormInput } from '@/components/admin/FormInput';
 import { mockOrders } from '@/data/mockData';
 import { Order } from '@/types/admin';
 import { FileText, Search } from 'lucide-react';
+import styles from './Sales.module.scss'; // Reuse shared styles
 
 const statusOptions = [
   { value: '', label: 'All Status' },
@@ -50,7 +51,7 @@ export default function OrdersList() {
       key: 'items',
       label: 'Items',
       render: (order: Order) => (
-        <span className="text-muted-foreground">
+        <span style={{ color: 'var(--text-secondary)' }}>
           {order.items.length} item{order.items.length !== 1 ? 's' : ''}
         </span>
       ),
@@ -59,7 +60,7 @@ export default function OrdersList() {
       key: 'totalAmount',
       label: 'Amount',
       render: (order: Order) => (
-        <span className="font-medium">₹{order.totalAmount.toLocaleString()}</span>
+        <span style={{ fontWeight: 500 }}>₹{order.totalAmount.toLocaleString()}</span>
       ),
     },
     {
@@ -88,9 +89,9 @@ export default function OrdersList() {
       render: (order: Order) => (
         <Link
           to={`/admin/orders/${order.id}`}
-          className="inline-flex items-center gap-1 text-sm text-accent hover:underline"
+          className={styles.linkBtn}
         >
-          <FileText className="h-4 w-4" />
+          <FileText size={16} />
           Invoice
         </Link>
       ),
@@ -98,20 +99,20 @@ export default function OrdersList() {
   ];
 
   return (
-    <div className="animate-fade-in">
+    <div className={styles.container}>
       <PageHeader title="Orders" description="Manage all customer orders" />
 
       {/* Filters */}
-      <div className="bg-card rounded-lg p-4 admin-shadow mb-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-          <div className="lg:col-span-2 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      <div className={styles.filters}>
+        <div className={styles.grid}>
+          <div className={styles.searchWrapper}>
+            <Search className={styles.searchIcon} />
             <input
               type="text"
               placeholder="Search by order ID or customer..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-md border border-input bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              className={styles.searchInput}
             />
           </div>
           <FormSelect
