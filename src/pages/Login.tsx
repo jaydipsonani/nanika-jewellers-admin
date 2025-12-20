@@ -22,7 +22,7 @@ export default function Login() {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      if (formData.email === 'admin@nanika.com' && formData.password === 'admin123') {
+      if (formData.email === 'admin@gmail.com' && formData.password === 'Rahul@123') {
         sessionStorage.setItem('isAdminAuthenticated', 'true');
         toast.success('Welcome back!');
         navigate('/admin');
@@ -52,7 +52,7 @@ export default function Login() {
             <FormInput
               label="Email"
               type="email"
-              placeholder="admin@nanika.com"
+              placeholder="Enter email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               required
@@ -60,7 +60,7 @@ export default function Login() {
             <FormInput
               label="Password"
               type="password"
-              placeholder="••••••••"
+              placeholder="Enter password"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               required
