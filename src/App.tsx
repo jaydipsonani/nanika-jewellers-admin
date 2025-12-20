@@ -1,9 +1,7 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { AdminLayout } from "@/components/admin/AdminLayout";
+import { Toaster } from "sonner";
+import { Layout } from "@/components/admin/Layout";
 import { ProtectedRoute } from "@/components/admin/ProtectedRoute";
 import Login from "@/pages/Login";
 import Dashboard from "@/pages/admin/Dashboard";
@@ -22,43 +20,40 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          {/* Login Page */}
-          <Route path="/login" element={<Login />} />
-          
-          {/* Redirect root to login */}
-          <Route path="/" element={<Navigate to="/login" replace />} />
-          
-          {/* Protected Admin Routes */}
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute>
-                <AdminLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<Dashboard />} />
-            <Route path="diamonds" element={<ManageDiamonds />} />
-            <Route path="diamonds/add" element={<AddDiamond />} />
-            <Route path="jewellery" element={<ManageJewellery />} />
-            <Route path="jewellery/add" element={<AddJewellery />} />
-            <Route path="sales" element={<SalesDashboard />} />
-            <Route path="orders" element={<OrdersList />} />
-            <Route path="orders/:orderId" element={<OrderDetails />} />
-            <Route path="customers" element={<CustomersList />} />
-            <Route path="settings" element={<Settings />} />
-          </Route>
+    <Toaster position="top-right" richColors />
+    <BrowserRouter>
+      <Routes>
+        {/* Login Page */}
+        <Route path="/login" element={<Login />} />
 
-          {/* 404 */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+        {/* Redirect root to login */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+
+        {/* Protected Admin Routes */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Dashboard />} />
+          <Route path="diamonds" element={<ManageDiamonds />} />
+          <Route path="diamonds/add" element={<AddDiamond />} />
+          <Route path="jewellery" element={<ManageJewellery />} />
+          <Route path="jewellery/add" element={<AddJewellery />} />
+          <Route path="sales" element={<SalesDashboard />} />
+          <Route path="orders" element={<OrdersList />} />
+          <Route path="orders/:orderId" element={<OrderDetails />} />
+          <Route path="customers" element={<CustomersList />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
+
+        {/* 404 */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
   </QueryClientProvider>
 );
 

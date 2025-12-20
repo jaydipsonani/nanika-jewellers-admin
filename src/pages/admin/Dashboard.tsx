@@ -1,5 +1,5 @@
 import { PageHeader } from '@/components/admin/PageHeader';
-import { StatsCard } from '@/components/admin/StatsCard';
+import { StatsCard } from '@/components/admin/StatsCard'; // Ensure StatsCard is also refactored? 
 import { DataTable } from '@/components/admin/DataTable';
 import { StatusBadge } from '@/components/admin/StatusBadge';
 import { mockOrders, mockSalesStats } from '@/data/mockData';
@@ -28,14 +28,14 @@ const recentOrderColumns = [
 
 export default function Dashboard() {
   return (
-    <div className="animate-fade-in">
+    <div>
       <PageHeader
         title="Dashboard"
         description="Welcome back! Here's what's happening with your store."
       />
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '16px', marginBottom: '32px' }}>
         <StatsCard
           title="Total Orders"
           value={mockSalesStats.totalOrders}
@@ -63,8 +63,8 @@ export default function Dashboard() {
       </div>
 
       {/* Recent Orders */}
-      <div className="space-y-4">
-        <h2 className="text-lg font-medium text-foreground">Recent Orders</h2>
+      <div>
+        <h2 style={{ fontSize: '1.125rem', fontWeight: 500, marginBottom: '16px' }}>Recent Orders</h2>
         <DataTable columns={recentOrderColumns} data={mockOrders} />
       </div>
     </div>

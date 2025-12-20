@@ -3,12 +3,15 @@ import { Link } from 'react-router-dom';
 import { PageHeader } from '@/components/admin/PageHeader';
 import { DataTable } from '@/components/admin/DataTable';
 import { StatusBadge } from '@/components/admin/StatusBadge';
-import { FormInput } from '@/components/admin/FormInput';
 import { FormSelect } from '@/components/admin/FormSelect';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/admin/Button';
 import { mockDiamonds } from '@/data/mockData';
 import { Diamond } from '@/types/admin';
 import { Plus, Search, Pencil, Trash2, Diamond as DiamondIcon } from 'lucide-react';
+import { EditDiamondModal } from '@/components/admin/Diamonds/EditDiamondModal';
+import { DeleteDiamondModal } from '@/components/admin/Diamonds/DeleteDiamondModal';
+import { toast } from '@/hooks/use-toast';
+import styles from './ManageDiamonds.module.scss';
 
 const shapeOptions = [
   { value: '', label: 'All Shapes' },
@@ -26,6 +29,8 @@ const clarityOptions = [
   { value: 'VVS2', label: 'VVS2' },
   { value: 'VS1', label: 'VS1' },
   { value: 'VS2', label: 'VS2' },
+  { value: 'SI1', label: 'SI1' },
+  { value: 'SI2', label: 'SI2' },
 ];
 
 const colorOptions = [
@@ -45,7 +50,16 @@ export default function ManageDiamonds() {
     color: '',
   });
 
-  const filteredDiamonds = mockDiamonds.filter((diamond) => {
+  // Modal states
+  const [editItem, setEditItem] = useState<Diamond | null>(null);
+  const [deleteItem, setDeleteItem] = useState<Diamond | null>(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  // Mock data state
+  const [data, setData] = useState<Diamond[]>(mockDiamonds);
+
+  const filteredDiamonds = data.filter((diamond) => {
     const matchesSearch =
       diamond.certificateNo.toLowerCase().includes(searchQuery.toLowerCase()) ||
       diamond.color.toLowerCase().includes(searchQuery.toLowerCase());
@@ -56,16 +70,49 @@ export default function ManageDiamonds() {
     return matchesSearch && matchesShape && matchesClarity && matchesColor;
   });
 
+  const handleEdit = (item: Diamond) => {
+    setEditItem(item);
+    setIsEditOpen(true);
+  };
+
+  const handleEditSave = (formData: any) => {
+    console.log("Saving edited diamond:", formData);
+    setData(prev => prev.map(item => item.id === editItem?.id ? { ...item, ...formData } : item));
+    setIsEditOpen(false);
+    setEditItem(null);
+    toast({
+      title: "Diamond Updated",
+      description: "Details have been successfully updated."
+    });
+  };
+
+  const handleDeleteClick = (item: Diamond) => {
+    setDeleteItem(item);
+    setIsDeleteOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (deleteItem) {
+      setData(prev => prev.filter(item => item.id !== deleteItem.id));
+      setIsDeleteOpen(false);
+      setDeleteItem(null);
+      toast({
+        title: "Diamond Deleted",
+        description: "Item has been successfully deleted."
+      });
+    }
+  };
+
   const columns = [
     {
       key: 'image',
       label: 'Image',
       render: (diamond: Diamond) => (
-        <div className="w-12 h-12 rounded-md bg-muted flex items-center justify-center">
+        <div className={styles.imageWrapper}>
           {diamond.image ? (
-            <img src={diamond.image} alt="" className="w-full h-full object-cover rounded-md" />
+            <img src={diamond.image} alt="" />
           ) : (
-            <DiamondIcon className="h-5 w-5 text-muted-foreground" />
+            <DiamondIcon size={20} className={styles.placeholder} />
           )}
         </div>
       ),
@@ -104,12 +151,18 @@ export default function ManageDiamonds() {
       key: 'actions',
       label: 'Actions',
       render: (diamond: Diamond) => (
-        <div className="flex items-center gap-2">
-          <button className="p-1.5 rounded-md hover:bg-muted admin-transition">
-            <Pencil className="h-4 w-4 text-muted-foreground" />
+        <div className={styles.actions}>
+          <button
+            className={`${styles.actionBtn} ${styles.edit}`}
+            onClick={() => handleEdit(diamond)}
+          >
+            <Pencil size={16} />
           </button>
-          <button className="p-1.5 rounded-md hover:bg-destructive/10 admin-transition">
-            <Trash2 className="h-4 w-4 text-destructive" />
+          <button
+            className={`${styles.actionBtn} ${styles.delete}`}
+            onClick={() => handleDeleteClick(diamond)}
+          >
+            <Trash2 size={16} />
           </button>
         </div>
       ),
@@ -117,27 +170,27 @@ export default function ManageDiamonds() {
   ];
 
   return (
-    <div className="animate-fade-in">
+    <div className={styles.container}>
       <PageHeader title="Manage Diamonds" description="View and manage your diamond inventory">
         <Link to="/admin/diamonds/add">
           <Button variant="admin">
-            <Plus className="h-4 w-4" />
+            <Plus size={16} />
             Add Diamond
           </Button>
         </Link>
       </PageHeader>
 
       {/* Filters */}
-      <div className="bg-card rounded-lg p-4 admin-shadow mb-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-          <div className="lg:col-span-2 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      <div className={styles.filters}>
+        <div className={styles.grid}>
+          <div className={styles.searchWrapper}>
+            <Search className={styles.searchIcon} />
             <input
               type="text"
               placeholder="Search by certificate or color..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-md border border-input bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              className={styles.searchInput}
             />
           </div>
           <FormSelect
@@ -160,6 +213,20 @@ export default function ManageDiamonds() {
 
       {/* Table */}
       <DataTable columns={columns} data={filteredDiamonds} totalPages={1} />
+
+      {/* Modals */}
+      <EditDiamondModal
+        open={isEditOpen}
+        onOpenChange={setIsEditOpen}
+        diamond={editItem}
+        onSave={handleEditSave}
+      />
+
+      <DeleteDiamondModal
+        open={isDeleteOpen}
+        onOpenChange={setIsDeleteOpen}
+        onConfirm={handleDeleteConfirm}
+      />
     </div>
   );
 }

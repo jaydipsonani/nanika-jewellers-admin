@@ -1,0 +1,79 @@
+@import '../styles/variables';
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $background-color;
+    padding: $spacing-md;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.card {
+    width: 100%;
+    max-width: 400px;
+    background-color: $card-bg;
+    border-radius: $spacing-lg;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    padding: $spacing-xl;
+    border: 1px solid $border-color;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: $spacing-xl;
+}
+
+.iconWrapper {
+    display: inline-flex;
+    padding: $spacing-md;
+    background-color: rgba($primary-color, 0.1);
+    border-radius: 9999px;
+    margin-bottom: $spacing-md;
+
+    svg {
+        color: $primary-color;
+    }
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: $spacing-xs;
+}
+
+.subtitle {
+    font-size: 0.875rem;
+    color: $text-secondary;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+}
+
+.loginBtn {
+    width: 100%;
+    margin-top: $spacing-sm;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

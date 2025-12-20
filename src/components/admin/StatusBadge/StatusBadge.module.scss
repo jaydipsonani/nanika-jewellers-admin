@@ -1,0 +1,45 @@
+@import '../../../styles/variables';
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    font-size: 0.75rem; // text-xs
+    font-weight: 500;
+}
+
+// Variants
+.active,
+.paid,
+.delivered,
+.success {
+    background-color: rgba($success-color, 0.1);
+    color: $success-color;
+}
+
+.warning,
+.pending {
+    background-color: rgba($warning-color, 0.1);
+    color: $warning-color;
+}
+
+.destructive,
+.failed,
+.cancelled {
+    background-color: rgba($danger-color, 0.1);
+    color: $danger-color;
+}
+
+.accent,
+.processing,
+.shipped {
+    background-color: rgba($accent-color, 0.1);
+    color: $accent-color;
+}
+
+.secondary,
+.hidden {
+    background-color: $background-color;
+    color: $text-secondary;
+}

@@ -1,0 +1,78 @@
+@import '../../../styles/variables';
+
+.layout {
+    min-height: 100vh;
+    background-color: $background-color;
+    position: relative;
+}
+
+.main {
+    min-height: 100vh;
+    padding-top: 64px; // Mobile header height
+    @include transition(margin-left);
+    background-color: $background-color;
+
+    &.expanded {
+        margin-left: $sidebar-width;
+    }
+
+    &.collapsed {
+        margin-left: $sidebar-collapsed-width;
+    }
+
+    @include mobile {
+        margin-left: 0 !important; // Override expanded/collapsed margin on mobile
+        padding-top: 0; // If sidebar is drawer, maybe we need top padding for a mobile header?
+        // Let's assume we have a mobile header.
+    }
+}
+
+.content {
+    padding: $spacing-lg;
+
+    @include mobile {
+        padding: $spacing-md;
+    }
+}
+
+.mobileHeader {
+    display: none;
+
+    @include mobile {
+        display: flex;
+        align-items: center;
+        padding: $spacing-md;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 64px;
+        background: $card-bg;
+        z-index: 30;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+        .menuBtn {
+            padding: $spacing-sm;
+            border-radius: 4px;
+            margin-right: $spacing-md;
+
+            &:hover {
+                background-color: $background-color;
+            }
+        }
+    }
+}
+
+.overlay {
+    display: none;
+
+    @include mobile {
+        &.visible {
+            display: block;
+            position: fixed;
+            inset: 0;
+            z-index: 35; // Below sidebar (40) but above content
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+    }
+}

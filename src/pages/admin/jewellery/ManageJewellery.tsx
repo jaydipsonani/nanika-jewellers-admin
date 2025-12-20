@@ -4,10 +4,14 @@ import { PageHeader } from '@/components/admin/PageHeader';
 import { DataTable } from '@/components/admin/DataTable';
 import { StatusBadge } from '@/components/admin/StatusBadge';
 import { FormSelect } from '@/components/admin/FormSelect';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/admin/Button';
 import { mockJewellery } from '@/data/mockData';
 import { Jewellery } from '@/types/admin';
 import { Plus, Search, Pencil, Trash2, Gem } from 'lucide-react';
+import { EditJewelleryModal } from '@/components/admin/Jewellery/EditJewelleryModal';
+import { DeleteJewelleryModal } from '@/components/admin/Jewellery/DeleteJewelleryModal';
+import { toast } from '@/hooks/use-toast';
+import styles from './ManageJewellery.module.scss';
 
 const categoryOptions = [
   { value: '', label: 'All Categories' },
@@ -33,7 +37,16 @@ export default function ManageJewellery() {
     metal: '',
   });
 
-  const filteredJewellery = mockJewellery.filter((item) => {
+  // Modal states
+  const [editItem, setEditItem] = useState<Jewellery | null>(null);
+  const [deleteItem, setDeleteItem] = useState<Jewellery | null>(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  // Mock data state (in real app this would be server state)
+  const [data, setData] = useState<Jewellery[]>(mockJewellery);
+
+  const filteredJewellery = data.filter((item) => {
     const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = !filters.category || item.category === filters.category;
     const matchesMetal = !filters.metal || item.metalType === filters.metal;
@@ -41,16 +54,50 @@ export default function ManageJewellery() {
     return matchesSearch && matchesCategory && matchesMetal;
   });
 
+  const handleEdit = (item: Jewellery) => {
+    setEditItem(item);
+    setIsEditOpen(true);
+  };
+
+  const handleEditSave = (formData: any) => {
+    console.log("Saving edited item:", formData);
+    // Update local state mock
+    setData(prev => prev.map(item => item.id === editItem?.id ? { ...item, ...formData } : item));
+    setIsEditOpen(false);
+    setEditItem(null);
+    toast({
+      title: "Jewellery Updated",
+      description: "Item has been successfully updated."
+    });
+  };
+
+  const handleDeleteClick = (item: Jewellery) => {
+    setDeleteItem(item);
+    setIsDeleteOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (deleteItem) {
+      setData(prev => prev.filter(item => item.id !== deleteItem.id));
+      setIsDeleteOpen(false);
+      setDeleteItem(null);
+      toast({
+        title: "Jewellery Deleted",
+        description: "Item has been successfully deleted."
+      });
+    }
+  };
+
   const columns = [
     {
       key: 'image',
       label: 'Image',
       render: (item: Jewellery) => (
-        <div className="w-12 h-12 rounded-md bg-muted flex items-center justify-center">
+        <div className={styles.imageWrapper}>
           {item.image ? (
-            <img src={item.image} alt="" className="w-full h-full object-cover rounded-md" />
+            <img src={item.image} alt="" />
           ) : (
-            <Gem className="h-5 w-5 text-muted-foreground" />
+            <Gem size={20} className={styles.placeholder} />
           )}
         </div>
       ),
@@ -65,7 +112,7 @@ export default function ManageJewellery() {
       key: 'metal',
       label: 'Metal',
       render: (item: Jewellery) => (
-        <span>
+        <span className={styles.metaInfo}>
           {item.metalType} {item.metalColor.replace('-', ' ')}
         </span>
       ),
@@ -89,12 +136,18 @@ export default function ManageJewellery() {
       key: 'actions',
       label: 'Actions',
       render: (item: Jewellery) => (
-        <div className="flex items-center gap-2">
-          <button className="p-1.5 rounded-md hover:bg-muted admin-transition">
-            <Pencil className="h-4 w-4 text-muted-foreground" />
+        <div className={styles.actions}>
+          <button
+            className={`${styles.actionBtn} ${styles.edit}`}
+            onClick={() => handleEdit(item)}
+          >
+            <Pencil size={16} />
           </button>
-          <button className="p-1.5 rounded-md hover:bg-destructive/10 admin-transition">
-            <Trash2 className="h-4 w-4 text-destructive" />
+          <button
+            className={`${styles.actionBtn} ${styles.delete}`}
+            onClick={() => handleDeleteClick(item)}
+          >
+            <Trash2 size={16} />
           </button>
         </div>
       ),
@@ -102,27 +155,27 @@ export default function ManageJewellery() {
   ];
 
   return (
-    <div className="animate-fade-in">
+    <div className={styles.container}>
       <PageHeader title="Manage Jewellery" description="View and manage your jewellery inventory">
         <Link to="/admin/jewellery/add">
           <Button variant="admin">
-            <Plus className="h-4 w-4" />
+            <Plus size={16} />
             Add Jewellery
           </Button>
         </Link>
       </PageHeader>
 
       {/* Filters */}
-      <div className="bg-card rounded-lg p-4 admin-shadow mb-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="lg:col-span-2 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      <div className={styles.filters}>
+        <div className={styles.grid}>
+          <div className={styles.searchWrapper}>
+            <Search className={styles.searchIcon} />
             <input
               type="text"
               placeholder="Search by title..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-md border border-input bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              className={styles.searchInput}
             />
           </div>
           <FormSelect
@@ -140,6 +193,21 @@ export default function ManageJewellery() {
 
       {/* Table */}
       <DataTable columns={columns} data={filteredJewellery} totalPages={1} />
+
+      {/* Modals */}
+      <EditJewelleryModal
+        open={isEditOpen}
+        onOpenChange={setIsEditOpen}
+        jewellery={editItem}
+        onSave={handleEditSave}
+      />
+
+      <DeleteJewelleryModal
+        open={isDeleteOpen}
+        onOpenChange={setIsDeleteOpen}
+        onConfirm={handleDeleteConfirm}
+      />
+
     </div>
   );
 }

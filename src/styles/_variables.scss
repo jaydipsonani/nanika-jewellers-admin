@@ -1,0 +1,62 @@
+// Colors
+$primary-color: #D4AF37; // Gold
+$primary-hover: #C5A028;
+$secondary-color: #2D3748;
+$background-color: #F7FAFC;
+$card-bg: #FFFFFF;
+$text-primary: #1A202C;
+$text-secondary: #718096;
+$border-color: #E2E8F0;
+$danger-color: #E53E3E;
+$success-color: #38A169;
+$warning-color: #DD6B20;
+$accent-color: #3182CE;
+
+// Sidebar
+$sidebar-width: 260px;
+$sidebar-collapsed-width: 80px;
+$sidebar-bg: #1A202C;
+$sidebar-text: #E2E8F0;
+$sidebar-hover: rgba(255, 255, 255, 0.1);
+
+// Spacing
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+// Breakpoints
+$mobile: 768px;
+$tablet: 1024px;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin mobile {
+  @media (max-width: $mobile) {
+    @content;
+  }
+}
+
+@mixin transition($properties...) {
+  transition: $properties 0.3s ease-in-out;
+}
+
+@mixin shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+@mixin shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}

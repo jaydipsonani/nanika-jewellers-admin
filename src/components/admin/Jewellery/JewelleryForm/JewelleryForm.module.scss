@@ -1,0 +1,185 @@
+@import '../../../../styles/variables';
+
+.formContainer {
+    @include transition(opacity);
+}
+
+.section {
+    background-color: $card-bg;
+    border-radius: $spacing-sm;
+    padding: $spacing-lg;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); // admin-shadow approximation
+    margin-bottom: $spacing-lg;
+
+    h3 {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: $text-secondary;
+        margin-bottom: $spacing-md;
+    }
+}
+
+.gridCols3 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $spacing-lg;
+
+    @include mobile {
+        // defaults to 1 col
+    }
+
+    @media (min-width: $tablet) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.colSpan2 {
+    @media (min-width: $tablet) {
+        grid-column: span 2 / span 2;
+    }
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+
+    @media (min-width: 640px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.fullWidth {
+    @media (min-width: 640px) {
+        grid-column: span 2 / span 2;
+    }
+}
+
+.diamondHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $spacing-md;
+}
+
+.tableWrapper {
+    overflow-x: auto;
+}
+
+.diamondTable {
+    width: 100%;
+    font-size: 0.875rem;
+    border-collapse: collapse;
+
+    th {
+        text-align: left;
+        font-weight: 500;
+        color: $text-secondary;
+        padding: $spacing-sm;
+        border-bottom: 1px solid $border-color;
+    }
+
+    td {
+        padding: $spacing-sm;
+        border-bottom: 1px solid rgba($border-color, 0.5);
+    }
+
+    input {
+        width: 100%;
+        padding: 4px 8px;
+        font-size: 0.75rem;
+        border-radius: 4px;
+        border: 1px solid $border-color;
+        background-color: $background-color;
+
+        &:focus {
+            outline: none;
+            border-color: $primary-color;
+            box-shadow: 0 0 0 1px $primary-color;
+        }
+    }
+}
+
+// Small input widths
+.wSmall {
+    max-width: 60px;
+}
+
+.wMedium {
+    max-width: 80px;
+}
+
+.removeBtn {
+    padding: 4px;
+    border-radius: 4px;
+    color: $danger-color;
+
+    &:hover {
+        background-color: rgba($danger-color, 0.1);
+    }
+
+    &:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+}
+
+.priceDisplay {
+    background-color: $background-color; // muted
+    border-radius: $spacing-sm;
+    padding: $spacing-lg;
+    margin-top: $spacing-lg;
+
+    .label {
+        font-size: 0.875rem;
+        color: $text-secondary;
+        margin-bottom: $spacing-sm;
+    }
+
+    .price {
+        font-size: 1.875rem; // 3xl
+        font-weight: 600;
+        color: $text-primary;
+    }
+
+    .note {
+        font-size: 0.75rem;
+        color: $text-secondary;
+        margin-top: $spacing-xs;
+    }
+}
+
+.submitBtn {
+    width: 100%;
+    margin-top: $spacing-lg;
+    background-color: $primary-color;
+    color: #fff;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    &:hover {
+        background-color: $primary-hover;
+    }
+}
+
+.addRowBtn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background-color: $secondary-color;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    @include transition(background-color);
+
+    &:hover {
+        background-color: lighten($secondary-color, 10%);
+    }
+}

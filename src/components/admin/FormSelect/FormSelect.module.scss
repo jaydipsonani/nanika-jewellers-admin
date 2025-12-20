@@ -1,0 +1,63 @@
+@import '../../../styles/variables';
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $text-primary;
+}
+
+.selectWrapper {
+    position: relative;
+}
+
+.select {
+    width: 100%;
+    padding: 8px 12px;
+    padding-right: 32px; // Space for chevron
+    border-radius: 6px;
+    border: 1px solid $border-color;
+    background-color: $background-color;
+    color: $text-primary;
+    font-size: 0.875rem;
+    appearance: none; // Hide default arrow
+    cursor: pointer;
+    @include transition(border-color, box-shadow);
+
+    &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+    }
+
+    &.error {
+        border-color: $danger-color;
+
+        &:focus {
+            border-color: $danger-color;
+            box-shadow: 0 0 0 2px rgba($danger-color, 0.2);
+        }
+    }
+}
+
+.chevron {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: $text-secondary;
+    pointer-events: none;
+}
+
+.errorText {
+    font-size: 0.75rem;
+    color: $danger-color;
+}

@@ -1,0 +1,35 @@
+@import '../../../../styles/variables';
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: $spacing-md;
+    margin-top: $spacing-lg;
+}
+
+.cancelBtn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $text-primary;
+    background-color: transparent;
+    border: 1px solid $border-color;
+
+    &:hover {
+        background-color: $background-color;
+    }
+}
+
+.deleteBtn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #fff;
+    background-color: $danger-color;
+
+    &:hover {
+        background-color: darken($danger-color, 10%);
+    }
+}

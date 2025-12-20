@@ -1,0 +1,122 @@
+@import '../../../styles/variables';
+
+.container {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.filters {
+    background-color: $card-bg;
+    border-radius: $spacing-sm;
+    padding: $spacing-md;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    margin-bottom: $spacing-lg;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+
+    @media (min-width: 640px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 1024px) {
+        grid-template-columns: repeat(5, 1fr); // 5 cols for diamond filters
+    }
+}
+
+.searchWrapper {
+    position: relative;
+
+    @media (min-width: 1024px) {
+        grid-column: span 2;
+    }
+}
+
+.searchIcon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: $text-secondary;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 8px 12px 8px 36px;
+    border-radius: 6px;
+    border: 1px solid $border-color;
+    background-color: $background-color;
+    color: $text-primary;
+    font-size: 0.875rem;
+    @include transition(border-color, box-shadow);
+
+    &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+    }
+}
+
+.imageWrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    background-color: $background-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .placeholder {
+        color: $text-secondary;
+    }
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.actionBtn {
+    padding: 6px;
+    border-radius: 6px;
+    @include transition(background-color, color);
+
+    &.edit {
+        color: $text-secondary;
+
+        &:hover {
+            background-color: $background-color;
+            color: $text-primary;
+        }
+    }
+
+    &.delete {
+        color: $danger-color;
+
+        &:hover {
+            background-color: rgba($danger-color, 0.1);
+        }
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

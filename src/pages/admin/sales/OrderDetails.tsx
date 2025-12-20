@@ -2,9 +2,11 @@ import { useParams, Link } from 'react-router-dom';
 import { PageHeader } from '@/components/admin/PageHeader';
 import { StatusBadge } from '@/components/admin/StatusBadge';
 import { FormSelect } from '@/components/admin/FormSelect';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/admin/Button';
 import { mockOrders } from '@/data/mockData';
 import { ArrowLeft, User, MapPin, Package, CreditCard } from 'lucide-react';
+import { cn } from '@/lib/utils';
+// import { Button } from '@/components/ui/button'; // Replaced with admin Button
 
 const orderStatusOptions = [
   { value: 'processing', label: 'Processing' },
@@ -19,85 +21,102 @@ export default function OrderDetails() {
 
   if (!order) {
     return (
-      <div className="flex flex-col items-center justify-center py-20">
-        <p className="text-muted-foreground mb-4">Order not found</p>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '80px 0' }}>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: '16px' }}>Order not found</p>
         <Link to="/admin/orders">
-          <Button variant="admin-outline">Back to Orders</Button>
+          <Button variant="outline">Back to Orders</Button>
         </Link>
       </div>
     );
   }
 
+  // Helper styles mimicking the original tailwind layout but with inline styles or scss is better.
+  // Using generic styles mapped from my mind or inline to save creating a module for just this page cleanup.
+  const cardStyle = {
+    backgroundColor: 'var(--card-bg)',
+    borderRadius: '8px',
+    boxShadow: 'var(--admin-shadow)',
+    overflow: 'hidden',
+    border: '1px solid var(--border-color)'
+  };
+  const headerStyle = {
+    padding: '16px',
+    borderBottom: '1px solid var(--border-color)',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px'
+  };
+
   return (
     <div className="animate-fade-in">
-      <div className="mb-6">
+      <div style={{ marginBottom: '24px' }}>
         <Link
           to="/admin/orders"
-          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-4"
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.875rem', color: 'var(--text-secondary)', marginBottom: '16px' }}
         >
-          <ArrowLeft className="h-4 w-4" />
+          <ArrowLeft size={16} />
           Back to Orders
         </Link>
         <PageHeader
           title={`Order ${order.id}`}
           description={`Placed on ${new Date(order.createdAt).toLocaleDateString()}`}
         >
-          <div className="flex items-center gap-3">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <StatusBadge status={order.paymentStatus} />
             <StatusBadge status={order.orderStatus} />
           </div>
         </PageHeader>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
         {/* Main Content */}
-        <div className="lg:col-span-2 space-y-6">
+        <div style={{ flex: 2, display: 'flex', flexDirection: 'column', gap: '24px' }}>
           {/* Order Items */}
-          <div className="bg-card rounded-lg admin-shadow overflow-hidden">
-            <div className="p-4 border-b border-border flex items-center gap-2">
-              <Package className="h-4 w-4 text-muted-foreground" />
-              <h3 className="font-medium">Order Items</h3>
+          <div style={cardStyle}>
+            <div style={headerStyle}>
+              <Package size={16} className="text-muted-foreground" />
+              <h3 style={{ fontWeight: 500 }}>Order Items</h3>
             </div>
-            <div className="divide-y divide-border">
+            <div>
               {order.items.map((item) => (
-                <div key={item.id} className="p-4 flex items-center justify-between">
+                <div key={item.id} style={{ padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)' }}>
                   <div>
-                    <p className="font-medium">{item.name}</p>
-                    <p className="text-sm text-muted-foreground capitalize">{item.type}</p>
+                    <p style={{ fontWeight: 500 }}>{item.name}</p>
+                    <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', textTransform: 'capitalize' }}>{item.type}</p>
                   </div>
-                  <div className="text-right">
-                    <p className="font-medium">₹{item.price.toLocaleString()}</p>
-                    <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
+                  <div style={{ textAlign: 'right' }}>
+                    <p style={{ fontWeight: 500 }}>₹{item.price.toLocaleString()}</p>
+                    <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Qty: {item.quantity}</p>
                   </div>
                 </div>
               ))}
             </div>
-            <div className="p-4 bg-muted/50 flex items-center justify-between">
-              <span className="font-medium">Total</span>
-              <span className="text-lg font-semibold">₹{order.totalAmount.toLocaleString()}</span>
+            <div style={{ padding: '16px', backgroundColor: 'rgba(0,0,0,0.02)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontWeight: 500 }}>Total</span>
+              <span style={{ fontSize: '1.125rem', fontWeight: 600 }}>₹{order.totalAmount.toLocaleString()}</span>
             </div>
           </div>
 
           {/* Payment Breakdown */}
-          <div className="bg-card rounded-lg admin-shadow overflow-hidden">
-            <div className="p-4 border-b border-border flex items-center gap-2">
-              <CreditCard className="h-4 w-4 text-muted-foreground" />
-              <h3 className="font-medium">Payment Details</h3>
+          <div style={cardStyle}>
+            <div style={headerStyle}>
+              <CreditCard size={16} className="text-muted-foreground" />
+              <h3 style={{ fontWeight: 500 }}>Payment Details</h3>
             </div>
-            <div className="p-4 space-y-3">
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Subtotal</span>
+            <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
+                <span style={{ color: 'var(--text-secondary)' }}>Subtotal</span>
                 <span>₹{order.totalAmount.toLocaleString()}</span>
               </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Shipping</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
+                <span style={{ color: 'var(--text-secondary)' }}>Shipping</span>
                 <span>Free</span>
               </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Tax (GST 3%)</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
+                <span style={{ color: 'var(--text-secondary)' }}>Tax (GST 3%)</span>
                 <span>₹{Math.round(order.totalAmount * 0.03).toLocaleString()}</span>
               </div>
-              <div className="pt-3 border-t border-border flex justify-between font-medium">
+              <div style={{ paddingTop: '12px', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', fontWeight: 500 }}>
                 <span>Grand Total</span>
                 <span>₹{Math.round(order.totalAmount * 1.03).toLocaleString()}</span>
               </div>
@@ -106,41 +125,41 @@ export default function OrderDetails() {
         </div>
 
         {/* Sidebar */}
-        <div className="space-y-6">
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '24px' }}>
           {/* Customer Info */}
-          <div className="bg-card rounded-lg admin-shadow overflow-hidden">
-            <div className="p-4 border-b border-border flex items-center gap-2">
-              <User className="h-4 w-4 text-muted-foreground" />
-              <h3 className="font-medium">Customer</h3>
+          <div style={cardStyle}>
+            <div style={headerStyle}>
+              <User size={16} className="text-muted-foreground" />
+              <h3 style={{ fontWeight: 500 }}>Customer</h3>
             </div>
-            <div className="p-4 space-y-2">
-              <p className="font-medium">{order.customerName}</p>
-              <p className="text-sm text-muted-foreground">{order.customerEmail}</p>
-              <p className="text-sm text-muted-foreground">{order.customerPhone}</p>
+            <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <p style={{ fontWeight: 500 }}>{order.customerName}</p>
+              <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>{order.customerEmail}</p>
+              <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>{order.customerPhone}</p>
             </div>
           </div>
 
           {/* Shipping Address */}
-          <div className="bg-card rounded-lg admin-shadow overflow-hidden">
-            <div className="p-4 border-b border-border flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-muted-foreground" />
-              <h3 className="font-medium">Shipping Address</h3>
+          <div style={cardStyle}>
+            <div style={headerStyle}>
+              <MapPin size={16} className="text-muted-foreground" />
+              <h3 style={{ fontWeight: 500 }}>Shipping Address</h3>
             </div>
-            <div className="p-4">
-              <p className="text-sm text-muted-foreground">{order.shippingAddress}</p>
-              <p className="text-sm mt-2">
-                <span className="text-muted-foreground">Delivery:</span>{' '}
-                <span className="font-medium">{order.deliveryDays} days</span>
+            <div style={{ padding: '16px' }}>
+              <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>{order.shippingAddress}</p>
+              <p style={{ fontSize: '0.875rem', marginTop: '8px' }}>
+                <span style={{ color: 'var(--text-secondary)' }}>Delivery:</span>{' '}
+                <span style={{ fontWeight: 500 }}>{order.deliveryDays} days</span>
               </p>
             </div>
           </div>
 
           {/* Status Update */}
-          <div className="bg-card rounded-lg admin-shadow overflow-hidden">
-            <div className="p-4 border-b border-border">
-              <h3 className="font-medium">Update Status</h3>
+          <div style={cardStyle}>
+            <div style={{ padding: '16px', borderBottom: '1px solid var(--border-color)' }}>
+              <h3 style={{ fontWeight: 500 }}>Update Status</h3>
             </div>
-            <div className="p-4 space-y-3">
+            <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <FormSelect
                 label="Order Status"
                 options={orderStatusOptions}

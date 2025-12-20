@@ -1,0 +1,81 @@
+@import '../../../styles/variables';
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.content {
+    background-color: $card-bg;
+    border-radius: $spacing-md;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 500px; // Default width
+    max-height: 85vh;
+    padding: $spacing-lg;
+    z-index: 51;
+    animation: slideIn 0.2s ease-out;
+    overflow-y: auto;
+
+    &:focus {
+        outline: none;
+    }
+
+    &.large {
+        max-width: 900px;
+    }
+}
+
+.title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: $spacing-sm;
+    color: $text-primary;
+}
+
+.description {
+    font-size: 0.875rem;
+    color: $text-secondary;
+    margin-bottom: $spacing-lg;
+}
+
+.closeBtn {
+    position: absolute;
+    top: $spacing-md;
+    right: $spacing-md;
+    color: $text-secondary;
+    cursor: pointer;
+
+    &:hover {
+        color: $text-primary;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -48%) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
